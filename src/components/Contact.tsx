@@ -5,8 +5,9 @@ import { Input } from '../components/ui/input';
 import { Textarea } from '../components/ui/textarea';
 import { Card } from '../components/ui/card';
 import { Mail, MessageSquare, Phone } from 'lucide-react';
-import { useToast } from '../hooks/use-toast';
 import { useState } from 'react';
+
+
 
 const Contact = () => {
   const [ref, inView] = useInView({
@@ -14,7 +15,7 @@ const Contact = () => {
     threshold: 0.1,
   });
 
-  const { toast } = useToast();
+
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -23,10 +24,7 @@ const Contact = () => {
 
     // Simulate form submission
     setTimeout(() => {
-      toast({
-        title: 'Message sent successfully!',
-        description: "We'll get back to you within 24 hours.",
-      });
+    
       setIsSubmitting(false);
       (e.target as HTMLFormElement).reset();
     }, 1000);
