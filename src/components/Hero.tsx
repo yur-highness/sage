@@ -1,4 +1,4 @@
-
+import CardSwap, { Card } from '../components/CardSwap';
 import { motion } from 'framer-motion';
 import { useRef } from 'react';
 import LaserFlow from '../components/LaserFlow';
@@ -7,7 +7,6 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { ArrowRight, CheckCircle } from 'lucide-react';
 
-
 type CSSWithVars = React.CSSProperties & {
   "--mx"?: string;
   "--my"?: string;
@@ -15,34 +14,30 @@ type CSSWithVars = React.CSSProperties & {
 
 const Hero = () => {
   const revealImgRef = useRef<HTMLImageElement | null>(null);
-  
 
   return (
     <section
-      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-hero pt-20"
-      onMouseMove={(e: React.MouseEvent<HTMLElement>) => {
+      className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-hero pt-24 pb-16"
+      onMouseMove={(e) => {
         const rect = e.currentTarget.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
 
-        const el = revealImgRef.current;
-        if (el) {
-          el.style.setProperty("--mx", `${x}px`);
-          el.style.setProperty("--my", `${y}px`);
+        if (revealImgRef.current) {
+          revealImgRef.current.style.setProperty("--mx", `${x}px`);
+          revealImgRef.current.style.setProperty("--my", `${y}px`);
         }
       }}
       onMouseLeave={() => {
-        const el = revealImgRef.current;
-        if (el) {
-          el.style.setProperty("--mx", "-9999px");
-          el.style.setProperty("--my", "-9999px");
+        if (revealImgRef.current) {
+          revealImgRef.current.style.setProperty("--mx", "-9999px");
+          revealImgRef.current.style.setProperty("--my", "-9999px");
         }
       }}
     >
-      {/* === FULL BACKGROUND LAYER === */}
+      {/* === BACKGROUND LAYER === */}
       <div className="absolute inset-0 -z-10 overflow-hidden">
 
-        {/* LaserFlow as background */}
         <LaserFlow
           horizontalBeamOffset={0.1}
           verticalBeamOffset={0.0}
@@ -54,16 +49,10 @@ const Hero = () => {
           ref={revealImgRef}
           src="/path/to/image.jpg"
           alt="Reveal"
+          className="absolute inset-0 w-full h-full object-cover pointer-events-none opacity-30"
           style={
             {
-              position: "absolute",
-              width: "100%",
-              height: "100%",
-              top: 0,
-              left: 0,
               mixBlendMode: "lighten",
-              opacity: 0.3,
-              pointerEvents: "none",
 
               "--mx": "-9999px",
               "--my": "-9999px",
@@ -72,27 +61,24 @@ const Hero = () => {
                 "radial-gradient(circle at var(--mx) var(--my), rgba(255,255,255,1) 0px, rgba(255,255,255,0.95) 60px, rgba(255,255,255,0.6) 120px, rgba(255,255,255,0.25) 180px, rgba(255,255,255,0) 240px)",
               maskImage:
                 "radial-gradient(circle at var(--mx) var(--my), rgba(255,255,255,1) 0px, rgba(255,255,255,0.95) 60px, rgba(255,255,255,0.6) 120px, rgba(255,255,255,0.25) 180px, rgba(255,255,255,0) 240px)",
-              WebkitMaskRepeat: "no-repeat",
-              maskRepeat: "no-repeat",
             } as CSSWithVars
           }
         />
 
-        {/* Optional glow background elements */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-float" />
+        {/* Glow background circles */}
+        <div className="absolute top-1/4 left-1/4 w-64 sm:w-72 md:w-96 h-64 sm:h-72 md:h-96 bg-primary/10 rounded-full blur-3xl animate-float" />
         <div
-          className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-accent/10 rounded-full blur-3xl animate-float"
+          className="absolute bottom-1/4 right-1/4 w-64 sm:w-72 md:w-96 h-64 sm:h-72 md:h-96 bg-accent/10 rounded-full blur-3xl animate-float"
           style={{ animationDelay: "2s" }}
         />
       </div>
 
-      {/* === FOREGROUND CONTENT (unchanged) === */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      {/* === FOREGROUND CONTENT === */}
+      <div className="container mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
 
-          {/* Left content ... unchanged */}
-          {/* <!-- your exact left hero content stays same --> */}
- <motion.div
+          {/* LEFT SIDE */}
+          <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
@@ -115,7 +101,7 @@ const Hero = () => {
               transition={{ delay: 0.3 }}
               className="text-4xl sm:text-5xl lg:text-6xl font-bold mb-6 leading-tight"
             >
-              Automate Your Business with{' '}
+              Automate Your Business with{" "}
               <span className="gradient-text">Powerful n8n Workflows</span>
             </motion.h1>
 
@@ -125,10 +111,10 @@ const Hero = () => {
               transition={{ delay: 0.4 }}
               className="text-lg sm:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto lg:mx-0"
             >
-              Save time, reduce costs, and scale effortlessly with our tailored automation systems. Transform repetitive tasks into seamless workflows.
+              Save time, reduce costs, and scale effortlessly with our tailored automation systems.
             </motion.p>
 
-            {/* Email Capture */}
+            {/* EMAIL INPUT */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -146,42 +132,58 @@ const Hero = () => {
               </Button>
             </motion.div>
 
-            {/* Social Proof */}
+            {/* SOCIAL PROOF */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.6 }}
-              className="flex flex-wrap items-center justify-center lg:justify-start gap-6 text-sm"
+              className="flex flex-wrap justify-center lg:justify-start gap-4 sm:gap-6 text-sm"
             >
               <div className="flex items-center gap-2">
                 <CheckCircle className="h-5 w-5 text-secondary" />
                 <span className="text-muted-foreground">Free consultation</span>
               </div>
+
               <div className="flex items-center gap-2">
                 <CheckCircle className="h-5 w-5 text-secondary" />
                 <span className="text-muted-foreground">No credit card required</span>
               </div>
+
               <div className="flex items-center gap-2">
                 <CheckCircle className="h-5 w-5 text-secondary" />
                 <span className="text-muted-foreground">24/7 support</span>
               </div>
             </motion.div>
           </motion.div>
-          {/* Right content area (use your image or animation here) */}
+
+          {/* RIGHT SIDE — RESPONSIVE CARD SWAP */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8, delay: 0.3 }}
-            className="relative"
+            className="relative w-full flex justify-center "
           >
-            {/* Put your hero image or 3D object here */}
-      
-
+            <div className="w-full max-w-lg sm:max-w-xl md:max-w-2xl lg:max-w-full aspect-16/10">
+              <CardSwap
+                cardDistance={40}
+                verticalDistance={60}
+                delay={5000}
+                pauseOnHover={false}
+              >
+                <Card>
+                  <img src="/workflow1.webp" className="w-full h-full object-cover rounded-xl" />
+                </Card>
+                <Card>
+                  <img src="/workflow1.webp" className="w-full h-full object-cover rounded-xl" />
+                </Card>
+                <Card>
+                  <img src="/workflow1.webp" className="w-full h-full object-cover rounded-xl" />
+                </Card>
+              </CardSwap>
+            </div>
           </motion.div>
-        </div>
 
-        {/* Stats section unchanged */}
-        {/* <!-- your stats content --> */}
+        </div>
       </div>
     </section>
   );
