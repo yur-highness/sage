@@ -109,20 +109,7 @@ const Testimonials = () => {
             </div>
           </Card>
 
-          {/* Indicators */}
-          <div className="flex justify-center gap-2 mt-8">
-            {testimonials.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setActiveIndex(index)}
-                className={`w-2.5 h-2.5 rounded-full transition-all duration-300 ${
-                  index === activeIndex
-                    ? 'bg-primary w-8'
-                    : 'bg-muted-foreground/30 hover:bg-muted-foreground/50'
-                }`}
-              />
-            ))}
-          </div>
+        
         </motion.div>
 
         {/* Grid of All Testimonials */}
@@ -136,7 +123,7 @@ const Testimonials = () => {
             >
               <Card
                 className={`p-6 h-full hover-lift cursor-pointer transition-all duration-300 ${
-                  index === activeIndex ? 'border-2 border-primary' : ''
+                  index === activeIndex ? 'border-2 border-[#FF79C6] ' : ''
                 }`}
                 onClick={() => setActiveIndex(index)}
               >
